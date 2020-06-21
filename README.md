@@ -8,4 +8,5 @@
 6. Add any random string for the SESSION_SECRET entry in your .env file
 7. Run with `npm run dev` or `yarn dev`
 8. Server should be listening on localhost:3000
-# next-connect
+
+## next-connect
