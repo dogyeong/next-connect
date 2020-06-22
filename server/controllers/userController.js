@@ -10,10 +10,8 @@ exports.getUsers = async (req, res) => {
 
 exports.getAuthUser = (req, res) => {
   if (!req.isAuthUser) {
-    res.status(403).json({
-      message: 'You are unauthenticated. Please sign in or sign up',
-    })
-    return res.redirect('/signin')
+    // 403: forbidden
+    return res.status(403).redirect('/signin')
   }
   res.json(req.user)
 }
@@ -48,7 +46,7 @@ exports.getUserFeed = async (req, res) => {
   res.json(users)
 }
 
-const uploadAvatarOptions = {
+const avatarUploadOptions = {
   storage: multer.memoryStorage(),
   limits: {
     // storing image files up to 1mb
@@ -63,7 +61,7 @@ const uploadAvatarOptions = {
   },
 }
 
-exports.uploadAvatar = multer(uploadAvatarOptions).single('avatar')
+exports.uploadAvatar = multer(avatarUploadOptions).single('avatar')
 
 exports.resizeAvatar = async (req, res, next) => {
   if (!req.file) {
@@ -90,7 +88,8 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   const { userId } = req.params
   if (!req.isAuthUser) {
-    return res.status(400).json({ message: 'You are not authorized to perform this action' })
+    // 403: forbidden
+    return res.status(403).json({ message: 'You are not authorized to perform this action' })
   }
   const deletedUser = await User.findOneAndDelete({ _id: userId })
   res.json(deletedUser)
